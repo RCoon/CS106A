@@ -8,10 +8,11 @@
  * to its initial position in the upper left corner of the house.
  */
 
-import stanford.karel.*;
+import stanford.karel.*; // imports karel
 
 public class CollectNewspaperKarel extends SuperKarel {
 
+	// does other stuff
 	public void run() {
 		move();
 		turnRight();
