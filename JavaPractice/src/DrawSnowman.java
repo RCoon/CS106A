@@ -13,9 +13,25 @@ import acm.program.*;
 
 public class DrawSnowman extends GraphicsProgram {
 	public void run() {
-		add(new GOval(120, 20, 40, 40));
-		add(new GRect(100, 60, 80, 110));
-		add(new GRect(115, 170, 15, 70));
-		add(new GRect(150, 170, 15, 70));
+		GOval head = new GOval(120, 20, 50, 50);
+		GOval rEye = new GOval(130, 30, 10, 10);
+		GOval lEye = new GOval(150, 30, 10, 10);
+		GLabel nose = new GLabel("v", 142, 50);
+		GOval mouth = new GOval(138, 52, 13, 13);
+		GOval chest = new GOval(105, 70, 80, 80);
+		GRect button1 = new GRect(138, 80, 13, 13);
+		GRect button2 = new GRect(138, 100, 13, 13);
+		GRect button3 = new GRect(138, 120, 13, 13);
+		GOval bottom = new GOval(95, 150, 100, 100);
+		add(head);
+		add(rEye);
+		add(lEye);
+		add(nose);
+		add(mouth);
+		add(chest);
+		add(button1);
+		add(button2);
+		add(button3);
+		add(bottom);
 	}
 }
