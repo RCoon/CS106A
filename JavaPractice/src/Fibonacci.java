@@ -12,11 +12,15 @@ public class Fibonacci extends ConsoleProgram {
 		int fib1 = 0;
 		int fib2 = 1;
 		println(fib1);
-		for(int i = 0; i < 20; i++) {
+		for(int i = 0; ; i++) {
 			int saveFib1 = fib1;
 			fib1 = fib2;
 			fib2 = saveFib1 + fib2;
-			println(fib1);
+			if(fib1 < 10000) {
+				println(fib1);
+			} else {
+				break;
+			}
 		}
 	}
 
