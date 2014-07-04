@@ -1,18 +1,14 @@
 /*
  * File: Checkerboard.java
  * -----------------------
- * This program draws a checkerboard
- */
-
-import acm.graphics.*;
-import acm.program.*;
-
-/*
  * This class draws a checkerboard on a the graphics window.
  * The size of the checkerboard is specified by the
  * constants NROWS and NCOLUMNS, and the checkerboard fills
  * the vertical space available.
  */
+
+import acm.graphics.*;
+import acm.program.*;
 
 public class Checkerboard extends GraphicsProgram {
 
