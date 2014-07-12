@@ -10,7 +10,7 @@ import acm.program.*;
 
 public class CardRank extends ConsoleProgram {
 	public void run() {
-		println("This program converst integers to card ranks.");
+		println("This program converts integers to card ranks.");
 		int n = readInt("Enter an integer between 1 and 13: ");
 		switch (n) {
 			case 1: println("Ace"); break;
