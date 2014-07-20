@@ -45,7 +45,7 @@ public class MathQuiz extends ConsoleProgram {
 					studentAnswer = readInt(incorrect);
 				}
 				if (studentAnswer == addAnswer) {
-					println(correct);
+					println(getAnswer());
 				} else {
 					println("No, the answer is " + addAnswer);
 				}
@@ -61,11 +61,22 @@ public class MathQuiz extends ConsoleProgram {
 					studentAnswer = readInt(incorrect);
 				}
 				if (studentAnswer == subAnswer) {
-					println(correct);
+					println(getAnswer());
 				} else {
 					println("No, the answer is " + subAnswer);
 				}
 			}
+		}
+	}
+	
+	private String getAnswer() {
+		int response = rgen.nextInt(0, 3);
+		switch (response) {
+			case 0: return "That's correct";
+			case 1: return "You got it!";
+			case 2: return "Way to go!";
+			case 3: return "Correct!";
+			default: return null;
 		}
 	}
 // Private instance variables
