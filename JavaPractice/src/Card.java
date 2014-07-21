@@ -9,13 +9,13 @@ public class Card {
 
 // Private constants
 	
-	private static final String CLUBS = "CLUBS";
+	private static final int CLUBS = 1;
 	
-	private static final String DIAMONDS = "DIAMONDS";
+	private static final int DIAMONDS = 2;
 	
-	private static final String HEARTS = "HEARTS";
+	private static final int HEARTS = 3;
 	
-	private static final String SPADES = "SPADES";
+	private static final int SPADES = 4;
 	
 	private static final int ACE = 1;
 	
@@ -30,7 +30,7 @@ public class Card {
 	 * @param rank The card's rank as an integer 1 - 13
 	 * @param suit The card's suit as a String
 	 */
-	public Card(int rank, String suit) {
+	public Card(int rank, int suit) {
 		cardRank = rank;
 		cardSuit = suit;
 	}
@@ -41,11 +41,11 @@ public class Card {
 	 */
 	public String getRank() {
 		switch (cardRank) {
-			case 1: return "Ace";
-			case 11: return "Jack";
-			case 12: return "Queen";
-			case 13: return "King";
-			default: return ("" + cardRank);
+			case ACE: return "Ace";
+			case JACK: return "Jack";
+			case QUEEN: return "Queen";
+			case KING: return "King";
+			default: return Integer.toString(cardRank);
 		}
 	}
 	
@@ -54,7 +54,13 @@ public class Card {
 	 * @return The suit of this card
 	 */
 	public String getSuit() {
-		return cardSuit;
+		switch (cardSuit) {
+			case CLUBS: return "Clubs";
+			case DIAMONDS: return "Diamonds";
+			case HEARTS: return "Hearts";
+			case SPADES: return "Spades";
+			default: return "no suit";
+		}
 	}
 	
 	/**
@@ -69,6 +75,6 @@ public class Card {
 	
 	private int cardRank; // The integer rank of the card, 1 - 13
 	
-	private String cardSuit; // All caps String of the card's suit
+	private int cardSuit; // Keeps track of the card object's suit
 	
 }
