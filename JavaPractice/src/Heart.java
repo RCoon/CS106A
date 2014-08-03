@@ -9,27 +9,20 @@ import acm.graphics.*;
 
 public class Heart extends GraphicsProgram {
 	
-	private static final double HEART_WIDTH = 100;
-	private static final double HEART_HEIGHT = 100;
-	
 	public void run() {
-		double x = getWidth() / 2;
-		double y = getHeight();
-		double x1 = x - HEART_WIDTH;
-		double y1 = y - HEART_HEIGHT;
-		GLine one = new GLine(x, y, x1, y1);
-		add(one);
-		GLine two = new GLine(x1, y1, x, getHeight() / 2);
-		add(two);
-		two.setVisible(false);
-		GLine three = new GLine(x, getHeight() / 2, x + HEART_WIDTH, y1);
-		add(three);
-		three.setVisible(false);
-		GLine four = new GLine(x + HEART_WIDTH, y1, x, y);
-		add(four);
-		GArc left = new GArc(x1 - (HEART_WIDTH / 5), getHeight() / 2 - (HEART_HEIGHT / 5), HEART_WIDTH * 1.4, HEART_HEIGHT * 1.4, 45, 180);
-		add(left);
-		GArc right = new GArc(x - (HEART_WIDTH / 5), getHeight() / 2 - (HEART_HEIGHT / 5), HEART_WIDTH * 1.4, HEART_HEIGHT * 1.4, -45, 180);
-		add(right);
+		double r = HEART_RADIUS;  
+        double root2 = Math.sqrt(2);  
+        double cx = getWidth() / 2;  
+        double cy = getHeight() / 2;  
+        double dx = r / root2;  
+        double height = 3 * dx + r;  
+        double top = cy - height / 2;  
+        double bottom = cy + height / 2;  
+        add(new GArc(cx - dx - r, top, 2 * r, 2 * r, 45, 180));  
+        add(new GArc(cx + dx - r, top, 2 * r, 2 * r, -45, 180));  
+        add(new GLine(cx, bottom, cx - 2 * dx, bottom - 2 * dx));  
+        add(new GLine(cx, bottom, cx + 2 * dx, bottom - 2 * dx));  
 	}
+// Private constants
+	private static final double HEART_RADIUS = 100;
 }
