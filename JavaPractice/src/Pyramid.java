@@ -18,7 +18,7 @@ public class Pyramid extends GraphicsProgram {
  
     private static final int BRICK_WIDTH = 30; //The width of each brick (30 pixels)
     private static final int BRICK_HEIGHT = 12; //The height of each brick (12 pixels)
-    private static final int BRICKS_IN_BASE = 14;  //The number of bricks in the base (14)
+    private static final int BRICKS_IN_BASE = 12;  //The number of bricks in the base (14)
       
      
     public void run() {
