@@ -15,7 +15,7 @@ import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Breakout extends GraphicsProgram {
+public class BreakoutNatasha extends GraphicsProgram {
 
 /** Width and height of application window in pixels */
 	public static final int APPLICATION_WIDTH = 400;
@@ -57,17 +57,22 @@ public class Breakout extends GraphicsProgram {
 /** Number of turns */
 	private static final int NTURNS = 3;
 	
-/** Delay time in milliseconds */   
-    private static final int DELAY = 10;
-
+/**Ball velocity*/	
+	private double vx, vy;
+	
+/**Random number generator for vx*/	
+	private RandomGenerator rgen = RandomGenerator.getInstance();
+	
+/** Animation delay or paust time between ball moves */	
+	private static final int DELAY = 10;
 
 /* Method: run() */
 /** Runs the Breakout program. */
 	public void run() {
-		for (int i = 0; i < NTURNS; i++) {
+		for(int i=0; i < NTURNS; i++) {
 			setUpGame();
 			playGame();
-			if (brickCounter == 0) {
+			if(brickCounter == 0) {
 				ball.setVisible(false);
 				printWinner();
 				break;
@@ -75,96 +80,159 @@ public class Breakout extends GraphicsProgram {
 			if(brickCounter > 0) {
 				removeAll();
 			}
-			
 		}
 		if(brickCounter > 0) {
 			printGameOver();
 		}
 	}
-
+	
 	private void setUpGame() {
-		drawBricks();
+		drawBricks( getWidth()/2, BRICK_Y_OFFSET);
 		drawPaddle();
 		drawBall();
 	}
 	
-	private void drawBricks() {
-		int x = BRICK_SEP / 2;
-		int y = BRICK_Y_OFFSET;
-		int rowcount = 1;
-		GRect brick;
-		for (int i = 0; i < NBRICK_ROWS; i++) {
-			for (int j = 0; j < NBRICKS_PER_ROW; j++) {
-				brick = new GRect(x, y, BRICK_WIDTH, BRICK_HEIGHT);
-				add(brick);
+	//adding an individual brick object
+	private GRect brick;
+	
+	//drawing all the bricks necessary for the game
+	private void drawBricks(double cx, double cy) {				
+		
+		/*need to have several columns in each row
+		 * so there need to be two for loops, 
+		 * one for loop for the rows and one for loop for the columns.
+		 */ 
+		
+		for( int row = 0; row < NBRICK_ROWS; row++ ) {
+			
+			for (int column = 0; column < NBRICKS_PER_ROW; column++) {
+				
+				/* To get the x coordinate for the starting width:
+				 * 	start at the center width, 
+				 * 	subtract half of the bricks (width) in the row,  
+				 * 	subtract half of the separations (width) between the bricks in the row,
+				 * now you're at where the first brick should be, 
+				 * so for the starting point of the next bricks in the column, you need to: 
+				 * 	add a brick width 
+				 * 	add a separation width
+				 */
+				
+				double	x = cx - (NBRICKS_PER_ROW*BRICK_WIDTH)/2 - ((NBRICKS_PER_ROW-1)*BRICK_SEP)/2 + column*BRICK_WIDTH + column*BRICK_SEP;
+				
+				/* To get the y coordinate of the starting height:
+				 * 	start at the given length from the top for the first row,
+				 * 	then add a brick height and a brick separation for each of the following rows
+				 */
+				
+				double	y = cy + row*BRICK_HEIGHT + row*BRICK_SEP;
+
+				brick = new GRect( x , y , BRICK_WIDTH , BRICK_HEIGHT );
+				add (brick);
 				brick.setFilled(true);
-				x += BRICK_WIDTH + BRICK_SEP;
-				if (rowcount <= 2) {
+				
+				//Setting colors depending on which row the bricks are in
+				
+				if (row < 2) {
 					brick.setColor(Color.RED);
-				} else if (rowcount == 3 || rowcount == 4) {
+				}
+				if (row == 2 || row == 3) {
 					brick.setColor(Color.ORANGE);
-				} else if (rowcount == 5 || rowcount == 6) {
+				}
+				if (row == 4 || row == 5) {
 					brick.setColor(Color.YELLOW);
-				} else if (rowcount == 7 || rowcount == 8) {
+				}
+				if (row == 6 || row == 7) {
 					brick.setColor(Color.GREEN);
-				} else {
+				}
+				if (row == 8 || row == 9) {
 					brick.setColor(Color.CYAN);
 				}
 			}
-			x = BRICK_SEP / 2;
-			y += BRICK_HEIGHT + BRICK_SEP;
-			rowcount++;
 		}
 	}
 	
+	//adding individual paddle object
+	private GRect paddle;
+	
+	//paddle set-up
 	private void drawPaddle() {
-		int px = (getWidth() / 2) - (PADDLE_WIDTH /2);
-		int py = getHeight() - PADDLE_Y_OFFSET;
-		paddle = new GRect(px, py, PADDLE_WIDTH, PADDLE_HEIGHT);
-		add(paddle);
+		//starting the paddle in the middle of the screen
+		double x = getWidth()/2 - PADDLE_WIDTH/2; 
+		//the paddle height stays consistent throughout the game
+		//need to make sure to subtract the PADDLE_HEIGHT, 
+		//since the rectangle gets drawn from the top left corner
+		double y = getHeight() - PADDLE_Y_OFFSET - PADDLE_HEIGHT;
+		paddle = new GRect (x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
 		paddle.setFilled(true);
-		paddle.setColor(Color.BLACK);
+		add (paddle);
 		addMouseListeners();
 	}
 	
+	//making the mouse track the paddle
+	public void mouseMoved(MouseEvent e) {
+		/* The mouse tracks the middle point of the paddle. 
+		 * If the middle point of the paddle is between half paddle width of the screen
+		 * and half a paddle width before the end of the screen, 
+		 * the x location of the paddle is set at where the mouse is minus half a paddle's width, 
+		 * and the height remains the same
+		 */
+		if ((e.getX() < getWidth() - PADDLE_WIDTH/2) && (e.getX() > PADDLE_WIDTH/2)) {
+			paddle.setLocation(e.getX() - PADDLE_WIDTH/2, getHeight() - PADDLE_Y_OFFSET - PADDLE_HEIGHT);
+		}
+		
+	}
+	
+	//adding an individual ball object
+	private GOval ball;
+	
+	
+	//ball set-up
 	private void drawBall() {
-		ball = new GOval((getWidth() / 2) - BALL_RADIUS, (getHeight() / 2) - BALL_RADIUS, BALL_RADIUS * 2, BALL_RADIUS * 2);
+		double x = getWidth()/2 - BALL_RADIUS;
+		double y = getHeight()/2 - BALL_RADIUS;
+		ball = new GOval(x, y, BALL_RADIUS, BALL_RADIUS);
 		ball.setFilled(true);
-		ball.setFillColor(Color.BLACK);
 		add(ball);
 	}
+	
 	private void playGame() {
 		waitForClick();
 		getBallVelocity();
 		while (true) {
 			moveBall();
-			if (ball.getY() > getHeight()) {
+			if (ball.getY() >= getHeight()) {
 				break;
 			}
-			if (brickCounter == 0) {
+			if(brickCounter == 0) {
 				break;
 			}
 		}
 	}
 	
+	
+	
 	private void getBallVelocity() {
-		vy = 3.0;
+		vy = 4.0;
 		vx = rgen.nextDouble(1.0, 3.0);
-		if (rgen.nextBoolean(0.5)) vx = -vx;
-		//while (ball.getY() < getHeight() && ball.getX() < getWidth()) {
-		//	pause(DELAY);
-		//	moveBall();
+		if (rgen.nextBoolean(0.5)) {
+			vx = -vx; 
+		}
+		
 	}
 	
 	private void moveBall() {
-		ball.move(vx,vy);
-		// Check for walls
-		if (ball.getX() - vx <= 0 && vx < 0 || (ball.getX() + vx >= (getWidth() - BALL_RADIUS * 2) &&  vx > 0)) {
+		ball.move(vx, vy);
+		//check for walls
+		//need to get vx and vy at the point closest to 0 or the other edge
+		if ((ball.getX() - vx <= 0 && vx < 0 )|| (ball.getX() + vx >= (getWidth() - BALL_RADIUS*2) && vx>0)) {
 			vx = -vx;
 		}
-		if (ball.getY() - vy <= 0 && vy < 0) {
+		//We don't need to check for the bottom wall, since the ball can fall through the wall at that point
+		if ((ball.getY() - vy <= 0 && vy < 0 )) {
 			vy = -vy;
 		}
+		
+		//check for other objects
 		GObject collider = getCollidingObject();
 		if (collider == paddle) {
 			/* We need to make sure that the ball only bounces off the top part of the paddle  
@@ -191,6 +259,7 @@ public class Breakout extends GraphicsProgram {
 		pause (DELAY);
 	}
 	
+	
 	private GObject getCollidingObject() {
 		
 		if((getElementAt(ball.getX(), ball.getY())) != null) {
@@ -209,21 +278,9 @@ public class Breakout extends GraphicsProgram {
 		else{
 	         return null;
 	      }
+		
 	}
 	
-// Making the mouse track the paddle
-	public void mouseMoved(MouseEvent e) {
-		/* The mouse tracks the middle point of the paddle. 
-		 * If the middle point of the paddle is between half paddle width of the screen
-		 * and half a paddle width before the end of the screen, 
-		 * the x location of the paddle is set at where the mouse is minus half a paddle's width, 
-		 * and the height remains the same
-		 */
-		if ((e.getX() < getWidth() - PADDLE_WIDTH/2) && (e.getX() > PADDLE_WIDTH/2)) {
-			paddle.setLocation(e.getX() - PADDLE_WIDTH/2, getHeight() - PADDLE_Y_OFFSET - PADDLE_HEIGHT);
-		}		
-	}
-		
 	private void printGameOver() {
 		GLabel gameOver = new GLabel ("Game Over", getWidth()/2, getHeight()/2);
 		gameOver.move(-gameOver.getWidth()/2, -gameOver.getHeight());
@@ -231,17 +288,12 @@ public class Breakout extends GraphicsProgram {
 		add (gameOver);
 	}
 	
+	private int brickCounter = 100;
+	
 	private void printWinner() {
 		GLabel Winner = new GLabel ("Winner!!", getWidth()/2, getHeight()/2);
 		Winner.move(-Winner.getWidth()/2, -Winner.getHeight());
 		Winner.setColor(Color.RED);
 		add (Winner);
 	}
-	
-// Instance variables
-	private GOval ball;
-	private double vx, vy;
-	private GRect paddle;
-	private RandomGenerator rgen = RandomGenerator.getInstance();
-	private int brickCounter = 100;
 }
