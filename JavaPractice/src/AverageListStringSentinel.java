@@ -1,5 +1,5 @@
 /*
-* File: AverageList.java
+* File: AverageListStringSentinel.java
 * -------------------------
 * This program reads integers one per line until the
 * user enters a special sentinel value to signal the
@@ -10,20 +10,20 @@
 import acm.program.*;
 import java.text.DecimalFormat;
 
-public class AverageList extends ConsoleProgram {
+public class AverageListStringSentinel extends ConsoleProgram {
 	// Specifies the value of the sentinel
-	private static final int SENTINEL = -1;
+	private static final String SENTINEL = "";
 	
 	public void run() {
 		println("This program averages a list of integers.");
-		println("Enter values, one per line, using " + SENTINEL);
-		println("to signal the end of the list.");
+		println("Enter values, one per line, using a blank line to signal the end of the list.");
 		int total = 0;
 		int count = 0;
 		while (true) {
-			int value = readInt("Enter an integer: ");
-			if (value == SENTINEL) break;
-			total += value;
+			String value = readLine("Enter an integer: ");
+			if (value.equals(SENTINEL)) break;
+			int decValue = Integer.parseInt(value);
+			total += decValue;
 			count++;
 		}
 		double average = (double)total / count;
