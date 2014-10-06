@@ -14,7 +14,14 @@ public class Hangman extends ConsoleProgram {
 
 	private static final int NUM_GUESSES = 8;
 	
+	public void init() {
+		canvas = new HangmanCanvas();
+		add(canvas);
+		
+	}
+	
 	public void run() {
+		canvas.reset();
 		lex = new HangmanLexicon();
 		currentWord = chooseWord();
 		String dashedWord = changeCharToDash(currentWord);
@@ -24,11 +31,13 @@ public class Hangman extends ConsoleProgram {
 		println("Welcome to Hangman!");
 		while (guessesLeft > 0) {
 			if (dashedWord.indexOf("-") == -1) {
+				canvas.displayWord(dashedWord);
 				println("You guessed the word: " + currentWord);
 				println("You win.");
 				break;
 			}
 			println("The word now looks like this: " + dashedWord);
+			canvas.displayWord(dashedWord);
 			if (guessesLeft == 1) {
 				println("You have only one guess left.");
 			} else {
@@ -43,6 +52,7 @@ public class Hangman extends ConsoleProgram {
 			if (currentWord.indexOf(charGuess) == -1) {
 				println("There are no " + charGuess + "\'s in the word.");
 				guessesLeft--;
+				canvas.noteIncorrectGuess(charGuess);
 			} else {
 				for (int i = 0; i < currentWord.length(); i++) {
 					if (charGuess == currentWord.charAt(i)) {
@@ -109,4 +119,5 @@ public class Hangman extends ConsoleProgram {
     private RandomGenerator rgen = RandomGenerator.getInstance();
     private String currentWord;
     private int guessesLeft;
+    private HangmanCanvas canvas;
 }
