@@ -6,10 +6,19 @@
  */
 
 import acm.util.*;
+import java.io.*;
 
 public class HangmanLexicon {
 
-/** Returns the number of words in the lexicon. */
+/** Constructs a new HangmanLexicon */
+	public HangmanLexicon() {
+		BufferedReader rd = new BufferedReader(new FileReader("HangmanLexicon.txt"));
+		while (true) {
+			String line = rd.readLine();
+		}
+	}
+	
+	/** Returns the number of words in the lexicon. */
 	public int getWordCount() {
 		return 10;
 	}
