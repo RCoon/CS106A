@@ -6,13 +6,23 @@
 
 import acm.graphics.*;
 
-public class HangmanCanvas extends GCanvas {
+public class MyHangmanCanvas extends GCanvas {
 
 /** Resets the display so that only the scaffold appears */
 	public void reset() {
-		removeAll();
 		drawScaffold();
 		drawHangman();
+		head.setVisible(false);
+		body.setVisible(false);
+		leftUpperArm.setVisible(false);
+		rightUpperArm.setVisible(false);
+		leftLowerArm.setVisible(false);
+		rightLowerArm.setVisible(false);
+		hips.setVisible(false);
+		leftLeg.setVisible(false);
+		rightLeg.setVisible(false);
+		leftFoot.setVisible(false);
+		rightFoot.setVisible(false);
 	}
 
 /**
@@ -35,25 +45,75 @@ public class HangmanCanvas extends GCanvas {
  */
 	public void noteIncorrectGuess(char letter) {
 		remove(incorrectLetters);
-		setNextVisible();
+		incorrectGuessCount++;
+		setNextVisible(incorrectGuessCount);
 		guessedLetters += letter;
 		incorrectLetters.setLabel(guessedLetters);
 		incorrectLetters.setFont("Courier-24");
 		add(incorrectLetters, getWidth() * 0.1, getHeight() * 0.9);
 	}
 	
-	private void setNextVisible() {
-		switch (incorrectGuessCount) {
-		case 0: hangman.add(head); incorrectGuessCount++; break;
-		case 1: hangman.add(body); incorrectGuessCount++; break;
-		case 2: hangman.add(leftUpperArm); hangman.add(leftLowerArm); incorrectGuessCount++; break;
-		case 3: hangman.add(rightUpperArm); hangman.add(rightLowerArm); incorrectGuessCount++; break;
-		case 4: hangman.add(hips); hangman.add(leftLeg); incorrectGuessCount++; break;
-		case 5: hangman.add(rightLeg); incorrectGuessCount++; break;
-		case 6: hangman.add(leftFoot); incorrectGuessCount++; break;
-		default: hangman.add(rightFoot); incorrectGuessCount++; break;
-		}
-		
+	private void setNextVisible(int incorrectGuessCount) {
+		if (incorrectGuessCount == 1) {
+			head.setVisible(true);
+		} else if (incorrectGuessCount == 2) {
+			head.setVisible(true);
+			body.setVisible(true);
+		} else if (incorrectGuessCount == 3) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+		} else if (incorrectGuessCount == 4) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+			rightUpperArm.setVisible(true);
+			rightLowerArm.setVisible(true);
+		} else if (incorrectGuessCount == 5) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+			rightUpperArm.setVisible(true);
+			rightLowerArm.setVisible(true);
+			hips.setVisible(true);
+			leftLeg.setVisible(true);
+		} else if (incorrectGuessCount == 6) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+			rightUpperArm.setVisible(true);
+			rightLowerArm.setVisible(true);
+			hips.setVisible(true);
+			leftLeg.setVisible(true);
+			rightLeg.setVisible(true);
+		} else if (incorrectGuessCount == 7) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+			rightUpperArm.setVisible(true);
+			rightLowerArm.setVisible(true);
+			hips.setVisible(true);
+			leftLeg.setVisible(true);
+			rightLeg.setVisible(true);
+			leftFoot.setVisible(true);
+		} else if (incorrectGuessCount == 8) {
+			head.setVisible(true);
+			body.setVisible(true);
+			leftUpperArm.setVisible(true);
+			leftLowerArm.setVisible(true);
+			rightUpperArm.setVisible(true);
+			rightLowerArm.setVisible(true);
+			hips.setVisible(true);
+			leftLeg.setVisible(true);
+			rightLeg.setVisible(true);
+			leftFoot.setVisible(true);
+			rightFoot.setVisible(true);
+		} 
 	}
 	
 	private GCompound drawScaffold() {
@@ -81,16 +141,27 @@ public class HangmanCanvas extends GCanvas {
 		int yleg = ybody + BODY_LENGTH + LEG_LENGTH;
 		hangman = new GCompound();
 		head = new GOval(x - HEAD_RADIUS / 2, y1 - SCAFFOLD_HEIGHT + ROPE_LENGTH, HEAD_RADIUS, HEAD_RADIUS);
+		hangman.add(head);
 		body = new GLine(x, ybody, x, ybody + BODY_LENGTH);
+		hangman.add(body);
 		leftUpperArm = new GLine(x, yarm, x + UPPER_ARM_LENGTH, yarm);
+		hangman.add(leftUpperArm);
 		rightUpperArm = new GLine(x, yarm, x - UPPER_ARM_LENGTH, yarm);
+		hangman.add(rightUpperArm);
 		leftLowerArm = new GLine(x + UPPER_ARM_LENGTH, yarm, x + UPPER_ARM_LENGTH, yarm + LOWER_ARM_LENGTH);
+		hangman.add(leftLowerArm);
 		rightLowerArm = new GLine(x - UPPER_ARM_LENGTH, yarm, x - UPPER_ARM_LENGTH, yarm + LOWER_ARM_LENGTH);
+		hangman.add(rightLowerArm);
 		hips = new GLine(x - HIP_WIDTH / 2, ybody + BODY_LENGTH, x + HIP_WIDTH / 2, ybody + BODY_LENGTH);
+		hangman.add(hips);
 		leftLeg = new GLine(x + HIP_WIDTH / 2, ybody + BODY_LENGTH, x + HIP_WIDTH / 2, yleg);
+		hangman.add(leftLeg);
 		rightLeg = new GLine(x - HIP_WIDTH / 2, ybody + BODY_LENGTH, x - HIP_WIDTH / 2, yleg);
+		hangman.add(rightLeg);
 		leftFoot = new GLine(x + HIP_WIDTH / 2, yleg, x + HIP_WIDTH / 2 + FOOT_LENGTH, yleg);
+		hangman.add(leftFoot);
 		rightFoot = new GLine(x - HIP_WIDTH / 2, yleg, x - HIP_WIDTH / 2 - FOOT_LENGTH, yleg);
+		hangman.add(rightFoot);
 		add(hangman);
 		return hangman;
 	}

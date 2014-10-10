@@ -2,10 +2,9 @@
  * File: HangmanLexicon.java
  * -------------------------
  * This file contains a stub implementation of the HangmanLexicon
- * class that you will reimplement for Part III of the assignment.
+ * class that you will re-implement for Part III of the assignment.
  */
 
-//import acm.util.*;
 import java.io.*;
 import java.util.*;
 
@@ -13,7 +12,6 @@ public class HangmanLexicon {
 
 /** Constructs a new HangmanLexicon */
 	public HangmanLexicon() {
-		//wordCount = 0;
 		strList = new ArrayList<String>();
 		try {
 		BufferedReader rd = new BufferedReader(new FileReader("HangmanLexicon.txt"));
@@ -21,7 +19,6 @@ public class HangmanLexicon {
 			String line = rd.readLine();
 			if (line == null) break;
 			strList.add(line);
-			// wordCount++;
 		}
 		rd.close();
 		} catch (IOException ex) {
@@ -39,7 +36,6 @@ public class HangmanLexicon {
 		return strList.get(index);
 	}
 	
-// Instance variables
-	// private int wordCount;
+/** Instance variables */
 	private ArrayList<String> strList;
 }
