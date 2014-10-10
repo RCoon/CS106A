@@ -5,10 +5,10 @@
  * Assignment #4.
  */
 
-import acm.graphics.*;
+// import acm.graphics.*;
 import acm.program.*;
 import acm.util.*;
-import java.awt.*;
+// import java.awt.*;
 
 public class Hangman extends ConsoleProgram {
 
