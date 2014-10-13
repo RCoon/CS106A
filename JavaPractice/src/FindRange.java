@@ -45,4 +45,3 @@ public class FindRange extends ConsoleProgram {
 		}
 	}
 }
-
