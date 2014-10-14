@@ -21,5 +21,25 @@ public class GymnasticsJudge extends ConsoleProgram {
 		}
 		double averageScore = total / nJudges;
 		println("The average score is " + averageScore);
+		println("The mean score is " + mean(scores));
+		println("The standard deviation is " + (String.format("%1.2f", stdev(scores))));
+	}
+	
+	private double mean(double[] array) {
+		double total = 0;
+		for (int i = 0; i < array.length; i++) {
+			total += array[i];
+		}
+		double meanAverage = total / array.length;
+		return meanAverage;
+	}
+	
+	private double stdev(double[] array) {
+		double sigma = 0;
+		for (int i = 0; i < array.length; i++) {
+			sigma += (Math.pow((mean(array) - array[i]), 2));
+		}
+		double stdev = Math.sqrt(sigma / (array.length - 1));
+		return stdev;
 	}
 }
